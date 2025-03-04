@@ -1,27 +1,34 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
-export default function CallbackPage() {
-  const searchParams = useSearchParams();
+function CallbackContent() {
   const [code, setCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Captura o código da URL
-    const authCode = searchParams.get("code");
-    setCode(authCode);
+    const fetchData = async () => {
+      // Captura o código da URL
+      const authCode = searchParams.get("code");
+      setCode(authCode);
 
-    if (authCode) {
-      console.log("Código de autorização recebido:", authCode);
-      // Aqui você pode fazer uma chamada para enviar o código ao seu backend
-      // Exemplo: handleAuthCode(authCode);
-    } else {
-      console.error("Código de autorização não encontrado na URL");
-    }
+      if (authCode) {
+        await fetch("/api/auth/callback", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ code: authCode }),
+        });
+      } else {
+      }
 
-    setLoading(false);
+      setLoading(false);
+    };
+
+    fetchData();
   }, [searchParams]);
 
   return (
@@ -29,7 +36,7 @@ export default function CallbackPage() {
       <div className="w-full max-w-md rounded-lg bg-ml-gray p-8 shadow-lg">
         <div className="mb-8 flex justify-center">
           <img
-            src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/5.22.8/mercadolibre/logo__large_plus.png"
+            src="/images/logo-mercado-livre.png"
             alt="Mercado Livre"
             className="h-12"
           />
@@ -58,5 +65,19 @@ export default function CallbackPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function CallbackPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-ml-yellow">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-ml-blue border-r-transparent"></div>
+        </div>
+      }
+    >
+      <CallbackContent />
+    </Suspense>
   );
 }

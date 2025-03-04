@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import MercadoLivreService from "@/lib/mercadoLivreService";
 
 export async function POST(request: NextRequest) {
-  const code = request.nextUrl.searchParams.get("code");
+  const { code } = await request.json();
 
   if (!code) {
     return new Response(
