@@ -4,6 +4,7 @@ import MercadoLivreService from "@/lib/mercadoLivreService.js";
 export async function GET() {
   try {
     const authUrl = await MercadoLivreService.getAuthUrl();
+
     return new Response(null, {
       status: 302,
       headers: { Location: authUrl },

@@ -25,6 +25,7 @@ class MercadoLivreService {
       }),
       { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
     );
+    console.log("retorno code : ", response.data);
 
     await this.createAccount(response.data);
     return response.data;

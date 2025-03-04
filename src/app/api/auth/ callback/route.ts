@@ -1,9 +1,8 @@
 import { NextRequest } from "next/server";
 import MercadoLivreService from "@/lib/mercadoLivreService";
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const code = searchParams.get("code");
+export async function POST(request: NextRequest) {
+  const code = request.nextUrl.searchParams.get("code");
 
   if (!code) {
     return new Response(
@@ -17,6 +16,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const tokenData = await MercadoLivreService.exchangeCodeForToken(code);
+
     // Aqui você pode salvar tokenData em um banco de dados ou sessão
     return new Response(
       JSON.stringify({ message: "Autenticação bem-sucedida", tokenData }),

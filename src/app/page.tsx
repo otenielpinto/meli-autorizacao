@@ -19,7 +19,7 @@ export default function Home() {
       <div className="w-full max-w-md rounded-lg bg-ml-gray p-8 shadow-lg">
         <div className="mb-8 flex justify-center">
           <img
-            src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/5.22.8/mercadolibre/logo__large_plus.png"
+            src="/images/logo-mercado-livre.png"
             alt="Mercado Livre"
             className="h-12"
           />
@@ -28,8 +28,8 @@ export default function Home() {
           Autorização de Conexão
         </h1>
         <p className="mb-8 text-ml-black text-center">
-          Para cadastrar seus produtos, precisamos da sua autorização para
-          acessar sua conta do Mercado Livre.
+          Para gerenciar sua conta no Mercado Livre , precisamos da sua
+          autorização para acessar sua conta do Mercado Livre.
           <br /> Você será redirecionado para a página oficial do Mercado Livre
           para concluir o processo de forma segura.
         </p>
