@@ -1,16 +1,34 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
 export default function CallbackPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen flex-col items-center justify-center bg-ml-yellow p-4">
+          <div className="w-full max-w-md rounded-lg bg-ml-gray p-8 shadow-lg">
+            <div className="text-center">
+              <p className="mb-4 text-ml-black">Carregando...</p>
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-ml-blue border-r-transparent"></div>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <PageContent />
+    </Suspense>
+  );
+}
+
+function PageContent() {
   const searchParams = useSearchParams();
   const [code, setCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      // Captura o código da URL
       const authCode = searchParams.get("code");
       setCode(authCode);
 
@@ -24,7 +42,6 @@ export default function CallbackPage() {
             "Content-Type": "application/json",
           },
         });
-      } else {
       }
 
       setLoading(false);
