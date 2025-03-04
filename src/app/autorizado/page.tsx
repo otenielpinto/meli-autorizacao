@@ -35,7 +35,7 @@ function PageContent() {
       if (authCode) {
         console.log("Código de autorização recebido:", authCode);
 
-        await fetch(`/api/auth/callback?code=${authCode}`, {
+        await fetch(`/api/auth/callback`, {
           method: "POST",
           body: JSON.stringify({ code: authCode }),
           headers: {
