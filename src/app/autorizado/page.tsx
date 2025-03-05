@@ -53,14 +53,6 @@ function PageContent() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-ml-yellow p-4">
       <div className="w-full max-w-md rounded-lg bg-ml-gray p-8 shadow-lg">
-        <div className="mb-8 flex justify-center">
-          <img
-            src="/images/logo-mercado-livre.png"
-            alt="Mercado Livre"
-            className="h-12"
-          />
-        </div>
-
         {loading ? (
           <div className="text-center">
             <p className="mb-4 text-ml-black">Processando autorização...</p>

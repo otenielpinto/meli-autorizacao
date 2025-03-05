@@ -3,7 +3,6 @@ import MercadoLivreService from "@/lib/mercadoLivreService";
 
 export async function POST(request: NextRequest) {
   const { code } = await request.json();
-  console.log("body", code);
 
   if (!code) {
     return new Response(
@@ -17,7 +16,6 @@ export async function POST(request: NextRequest) {
 
   try {
     const tokenData = await MercadoLivreService.exchangeCodeForToken(code);
-    console.log("tokenData", tokenData);
 
     // Aqui você pode salvar tokenData em um banco de dados ou sessão
     return new Response(
