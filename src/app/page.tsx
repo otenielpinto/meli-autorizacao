@@ -9,7 +9,7 @@ export default function Home() {
   };
 
   const handleCancelar = () => {
-    console.log("Operação cancelada");
+    window.location.href = "https://www.mercadolivre.com.br/";
   };
 
   return (
