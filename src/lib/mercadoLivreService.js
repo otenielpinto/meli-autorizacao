@@ -78,17 +78,37 @@ class MercadoLivreService {
   }
 
   async getAccountById(id) {
-    const response = await axios.get(
-      `https://auth.komache.workers.dev/account?id=${id}`
+    let response = await axios.get(
+      `https://auth.komache.workers.dev/account?id=${id}`,
+      { headers: { "Content-Type": "application/json" } }
     );
+
+    // Verifica se o token está expirado
+    let data = await this.renewToken(response?.data);
+    if (data?.refresh_token) {
+      response = await axios.get(
+        `https://auth.komache.workers.dev/account?id=${id}`,
+        { headers: { "Content-Type": "application/json" } }
+      );
+    }
 
     return response.data;
   }
 
   async getToken(refresh_token) {
-    const response = await axios.get(
-      `https://auth.komache.workers.dev/token?refreshToken=${refresh_token}`
+    let response = await axios.get(
+      `https://auth.komache.workers.dev/token?refreshToken=${refresh_token}`,
+      { headers: { "Content-Type": "application/json" } }
     );
+
+    // Verifica se o token está expirado
+    let data = await this.renewToken(response?.data);
+    if (data?.refresh_token) {
+      response = await axios.get(
+        `https://auth.komache.workers.dev/token?refreshToken=${data.refresh_token}`,
+        { headers: { "Content-Type": "application/json" } }
+      );
+    }
     return response.data;
   }
 
@@ -102,6 +122,21 @@ class MercadoLivreService {
       { headers: { "Content-Type": "application/json" } }
     );
     return response.data;
+  }
+
+  async renewToken(data) {
+    if (!data || !data.created_at) return null;
+    const currentTime = Date.now() / 1000;
+    const tokenAge = currentTime - data.created_at;
+
+    if (tokenAge >= data.expires_in - 60) {
+      try {
+        return await this.refreshToken(data.refresh_token);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    return null;
   }
 }
 
