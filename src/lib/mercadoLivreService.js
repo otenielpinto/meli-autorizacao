@@ -31,20 +31,20 @@ class MercadoLivreService {
   }
 
   // Método para renovar o token
-  async refreshToken(access_token) {
+  async refreshToken(refresh_token) {
     const response = await axios.post(
       process.env.MERCADO_LIVRE_TOKEN_URL,
       new URLSearchParams({
         grant_type: "refresh_token",
         client_id: process.env.CLIENT_ID,
         client_secret: process.env.CLIENT_SECRET,
-        refresh_token: refreshToken,
+        refresh_token: refresh_token,
       }),
       { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
     );
 
     await this.updateToken(
-      access_token,
+      refresh_token,
       response?.data?.access_token,
       response?.data?.refresh_token
     );
@@ -116,11 +116,11 @@ class MercadoLivreService {
     return response.data;
   }
 
-  async updateToken(old_access_token, access_token, refresh_token) {
+  async updateToken(old_refresh_token, access_token, refresh_token) {
     const response = await axios.post(
       `https://auth.komache.workers.dev/token`,
       {
-        old_access_token,
+        old_refresh_token,
         access_token,
         refresh_token,
       },
@@ -135,8 +135,9 @@ class MercadoLivreService {
     const tokenAge = currentTime - data.created_at;
 
     if (tokenAge >= data.expires_in - 60) {
+      console.log("Token expirado, vamos renovar o token");
       try {
-        return await this.refreshToken(data.access_token);
+        return await this.refreshToken(data.refresh_token);
       } catch (error) {
         console.log(error);
       }

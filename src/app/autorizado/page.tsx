@@ -133,7 +133,7 @@ function PageContent() {
             {!submitted ? (
               <>
                 <p className="mb-4 text-ml-black">
-                  Por favor, informe os dados da empresa:
+                  Por favor, informe os dados da sua empresa:
                 </p>
 
                 {formError && (
@@ -172,7 +172,7 @@ function PageContent() {
                       id="cnpj"
                       value={cnpj}
                       onChange={handleCnpjChange}
-                      placeholder="XX.XXX.XXX/XXXX-XX"
+                      placeholder="CNPJ da sua empresa"
                       className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-ml-blue"
                       required
                     />

@@ -2,11 +2,11 @@ import { NextRequest } from "next/server";
 import MercadoLivreService from "@/lib/mercadoLivreService";
 
 export async function POST(request: NextRequest) {
-  const { refreshToken } = await request.json();
+  const { refresh_token } = await request.json();
 
-  if (!refreshToken) {
+  if (!refresh_token) {
     return new Response(
-      JSON.stringify({ error: "Refresh token não fornecido" }),
+      JSON.stringify({ error: "refreshToken não fornecido" }),
       {
         status: 400,
         headers: { "Content-Type": "application/json" },
@@ -15,9 +15,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const tokenData = await MercadoLivreService.refreshToken(refreshToken);
+    const tokenData = await MercadoLivreService.refreshToken(refresh_token);
     return new Response(
-      JSON.stringify({ message: "Token renovado com sucesso", tokenData }),
+      JSON.stringify({ message: "Token renovado com sucesso", ...tokenData }),
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
